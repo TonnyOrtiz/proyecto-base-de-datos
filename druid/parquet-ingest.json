@@ -1,0 +1,30 @@
+{
+  "type": "index_parallel",
+  "spec": {
+    "ioConfig": {
+      "type": "index_parallel",
+      "inputSource": {
+        "type": "local",
+        "baseDir": "/opt/druid/data/ingest",
+        "filter": "*.snappy.parquet"
+      },
+      "inputFormat": {
+        "type": "parquet"
+      }
+    },
+    "dataSchema": {
+      "dataSource": "crime_data",
+      "timestampSpec": {
+        "column": "timestamp", 
+        "format": "iso"
+      },
+      "dimensionsSpec": {
+        "dimensions": ["AREA NAME", "Vict Sex", "Crm Cd Desc"]
+      },
+      "granularitySpec": {
+        "segmentGranularity": "month",
+        "queryGranularity": "day"
+      }
+    }
+  }
+}

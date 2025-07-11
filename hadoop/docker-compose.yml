@@ -1,0 +1,43 @@
+services:
+  namenode:
+    image: apache/hadoop:3.3.5
+    container_name: namenode
+    hostname: namenode
+    user: root
+    environment:
+      - HADOOP_HOME=/opt/hadoop
+    volumes:
+      - /mnt/data/volumes/hadoop/hadoop_namenode:/opt/hadoop/data/nameNode
+      - ./hadoop_config:/opt/hadoop/etc/hadoop
+      - ./start-hdfs.sh:/start-hdfs.sh
+    ports:
+      - "9870:9870"
+      - "9000:9000"
+    command: [ "/bin/bash", "/start-hdfs.sh" ]
+    networks:
+      - hdfs_network
+
+  datanode1:
+    image: apache/hadoop:3.3.5
+    container_name: datanode1
+    hostname: datanode1
+    user: root
+    environment:
+      - HADOOP_HOME=/opt/hadoop
+      - HDFS_NAMENODE_HOST=namenode
+    volumes:
+      - /mnt/data/volumes/hadoop/hadoop_datanode1:/opt/hadoop/data/dataNode
+      - ./hadoop_config:/opt/hadoop/etc/hadoop
+      - ./init-datanode.sh:/init-datanode.sh
+    ports:
+      - "9866:9866"
+      - "9864:9864"    
+    depends_on:
+      - namenode
+    command: [ "/bin/bash", "/init-datanode.sh" ]
+    networks:
+      - hdfs_network
+
+networks:
+  hdfs_network:
+    driver: bridge

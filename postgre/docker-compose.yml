@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgresadmin
+      POSTGRES_PASSWORD: postgrespass2025
+    volumes:
+      - /mnt/data/volumes/postgres/pgdata:/var/lib/postgresql/data 
+ 
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 5433:5432
+      - 8085:8080 
+ 
+volumes:
+  pgdata:
+

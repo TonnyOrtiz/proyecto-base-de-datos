@@ -1,0 +1,79 @@
+{
+  "type": "index_parallel",
+  "spec": {
+    "ioConfig": {
+      "type": "index_parallel",
+      "inputSource": {
+        "type": "local",
+        "baseDir": "/data/ingestion/crime_data_latest",
+        "filter": "*/*.csv"
+      },
+      "inputFormat": {
+        "type": "csv",
+        "findColumnsFromHeader": false,
+        "skipHeaderRows": 1,
+        "columns": ["DR_NO","Date Rptd","DATE OCC","TIME OCC","AREA","AREA NAME","Rpt Dist No","Part 1-2","Crm Cd","Crm Cd Desc","Mocodes","Vict Age","Vict Sex","Vict Descent","Premis Cd","Premis Desc","Weapon Used Cd","Weapon Desc","Status","Status Desc","Crm Cd 1","Crm Cd 2","Crm Cd 3","Crm Cd 4","LOCATION","Cross Street","LAT","LON","processing_ts","state"],
+        "hasHeaderRow": true
+      }
+    },
+    "tuningConfig": {
+      "type": "index_parallel",
+      "appendToExisting": false,
+      "dropExisting": true,
+      "logParseExceptions": true,
+      "maxNumConcurrentSubTasks": 2,
+      "maxRowsPerSegment": 1000000
+    },
+    "dataSchema": {
+      "dataSource": "crime_reports",
+      "timestampSpec": {
+        "column": "Date Rptd",
+        "format": "MM/dd/yyyy hh:mm:ss a"
+      },
+      "dimensionsSpec": {
+        "dimensions": [
+          {"type": "long", "name": "DR_NO"},
+          {"type": "string", "name": "DATE OCC"},
+          {"type": "long", "name": "TIME OCC"},
+          {"type": "long", "name": "AREA"},
+          {"type": "string", "name": "AREA NAME"},
+          {"type": "long", "name": "Rpt Dist No"},
+          {"type": "long", "name": "Part 1-2"},
+          {"type": "long", "name": "Crm Cd"},
+          {"type": "string", "name": "Crm Cd Desc"},
+          {"type": "string", "name": "Mocodes"},
+          {"type": "long", "name": "Vict Age"},
+          {"type": "string", "name": "Vict Sex"},
+          {"type": "string", "name": "Vict Descent"},
+          {"type": "long", "name": "Premis Cd"},
+          {"type": "string", "name": "Premis Desc"},
+          {"type": "long", "name": "Weapon Used Cd"},
+          {"type": "string", "name": "Weapon Desc"},
+          {"type": "string", "name": "Status"},
+          {"type": "string", "name": "Status Desc"},
+          {"type": "long", "name": "Crm Cd 1"},
+          {"type": "long", "name": "Crm Cd 2"},
+          {"type": "string", "name": "Crm Cd 3"},
+          {"type": "string", "name": "Crm Cd 4"},
+          {"type": "string", "name": "LOCATION"},
+          {"type": "string", "name": "Cross Street"},
+          {"type": "double", "name": "LAT"},
+          {"type": "double", "name": "LON"},
+          {"type": "string", "name": "processing_ts"},
+          {"type": "string", "name": "state"}
+        ],
+        "dimensionExclusions": ["Date Rptd"]
+      },
+      "metricsSpec": [
+        {"name": "count", "type": "count"}
+      ],
+      "granularitySpec": {
+        "type": "uniform",
+        "segmentGranularity": "day",
+        "queryGranularity": "hour",
+        "rollup": false,
+        "intervals": null
+      }
+    }
+  }
+}

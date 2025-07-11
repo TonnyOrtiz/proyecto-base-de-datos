@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<configuration>
+  <!-- Configuración básica -->
+  <property>
+    <name>dfs.replication</name>
+    <value>1</value>
+    <description>Número de réplicas (solo tenemos 1 datanode)</description>
+  </property>
+
+  <property>
+    <name>dfs.namenode.name.dir</name>
+    <value>file:/opt/hadoop/data/nameNode</value>
+    <description>Ruta local donde el NameNode guarda su metadata</description>
+  </property>
+
+  <property>
+    <name>dfs.datanode.data.dir</name>
+    <value>file:/opt/hadoop/data/dataNode</value>
+    <description>Ruta local donde el DataNode guarda los bloques</description>
+  </property>
+
+  <!-- Configuración de direcciones -->
+  <property>
+    <name>dfs.namenode.rpc-address</name>
+    <value>0.0.0.0:9000</value>
+    <description>Dirección RPC del NameNode (todas interfaces)</description>
+  </property>
+
+  <property>
+    <name>dfs.namenode.http-address</name>
+    <value>0.0.0.0:9870</value>
+    <description>Web UI del NameNode (todas interfaces)</description>
+  </property>
+
+  <!-- Configuración para conexiones externas -->
+  <property>
+    <name>dfs.client.use.datanode.hostname</name>
+    <value>false</value>
+    <description>Usar IPs en lugar de hostnames para conexiones</description>
+  </property>
+
+  <property>
+    <name>dfs.datanode.use.datanode.hostname</name>
+    <value>false</value>
+    <description>Permite conexiones directas por IP</description>
+  </property>
+
+  <property>
+    <name>dfs.datanode.address</name>
+    <value>0.0.0.0:9866</value>
+    <description>Puerto de datos escuchando en todas interfaces</description>
+  </property>
+
+  <property>
+    <name>dfs.datanode.http.address</name>
+    <value>0.0.0.0:9864</value>
+    <description>HTTP escuchando en todas interfaces</description>
+  </property>
+
+  <!-- Configuración de Safe Mode -->
+  <property>
+    <name>dfs.namenode.safemode.threshold-pct</name>
+    <value>0.0</value>
+    <description>0% de bloques necesarios para salir de safemode</description>
+  </property>
+
+  <property>
+    <name>dfs.namenode.safemode.min.datanodes</name>
+    <value>1</value>
+    <description>Solo necesita 1 datanode activo</description>
+  </property>
+
+  <property>
+    <name>dfs.namenode.safemode.extension</name>
+    <value>0</value>
+    <description>0 ms de extensión en safemode</description>
+  </property>
+
+  <!-- Seguridad y permisos -->
+  <property>
+    <name>dfs.permissions.enabled</name>
+    <value>false</value>
+    <description>Desactiva permisos estrictos en desarrollo</description>
+  </property>
+
+  <!-- Configuración adicional para clientes externos -->
+  <property>
+    <name>dfs.namenode.datanode.registration.ip</name>
+    <value>0.0.0.0</value>
+    <description>Aceptar registros de datanodes en cualquier IP</description>
+  </property>
+
+  <property>
+    <name>dfs.client.file-block-storage-locations.timeout</name>
+    <value>30000</value>
+    <description>Timeout aumentado para operaciones</description>
+  </property>
+</configuration>

@@ -1,0 +1,74 @@
+{
+  "type": "index_parallel",
+  "spec": {
+    "ioConfig": {
+      "type": "index_parallel",
+      "inputSource": {
+        "type": "sql",
+        "database": {
+          "type": "postgresql",
+          "connectorConfig": {
+            "connectURI": "jdbc:postgresql://172.16.202.175:5432/crimesdata",
+            "user": "druid",
+            "password": "FoolishPassword"
+	  }
+	},
+        "sql": "SELECT *, DATE_TRUNC('hour', \"DATE OCC\") AS \"hour_time\" FROM crimes"
+      }
+    },
+    "dataSchema": {
+      "dataSource": "la_crimes",
+      "timestampSpec": {
+        "column": "hour_time",
+        "format": "iso",
+        "missingValue": "2023-01-01T00:00:00Z"
+      },
+      "dimensionsSpec": {
+        "dimensions": [
+          "AREA NAME",
+          "Vict Sex",
+          "Vict Descent",
+          "Crm Cd Desc",
+          "Weapon Desc",
+          "Status Desc",
+          {
+            "type": "long",
+            "name": "AREA"
+          },
+          {
+            "type": "long",
+            "name": "Vict Age"
+          },
+          {
+            "type": "string",
+            "name": "LOCATION",
+            "createBitmapIndex": true
+          }
+        ]
+      },
+      "metricsSpec": [
+        {
+          "name": "count",
+          "type": "count"
+        },
+        {
+          "name": "distinct_DR_NO",
+          "type": "hyperUnique",
+          "fieldName": "DR_NO"
+        },
+        {
+          "name": "avg_Vict_Age",
+          "type": "doubleMean",
+          "fieldName": "Vict Age"
+        }
+      ],
+      "granularitySpec": {
+        "type": "uniform",
+        "segmentGranularity": "month",
+        "queryGranularity": "hour",
+        "rollup": true,
+        "intervals": ["2020-01-01/2025-12-31"]
+      }
+    }
+  }
+}

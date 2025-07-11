@@ -1,0 +1,56 @@
+{
+  "type": "kafka",
+  "spec": {
+    "dataSchema": {
+      "dataSource": "crime-data",
+      "timestampSpec": {
+        "column": "DATE OCC",
+        "format": "MM/dd/yyyy hh:mm:ss a",
+        "missingValue": "2020-01-01T00:00:00Z"
+      },
+      "dimensionsSpec": {
+        "dimensions": [
+          {"type": "string", "name": "DR_NO"},
+          {"type": "string", "name": "AREA NAME"},
+          {"type": "string", "name": "Rpt Dist No"},
+          {"type": "string", "name": "Crm Cd Desc"},
+          {"type": "string", "name": "Vict Sex"},
+          {"type": "string", "name": "Vict Descent"},
+          {"type": "string", "name": "Premis Desc"},
+          {"type": "string", "name": "Weapon Desc"},
+          {"type": "string", "name": "Status Desc"},
+          {"type": "string", "name": "LOCATION"},
+          {"type": "double", "name": "LAT"},
+          {"type": "double", "name": "LON"}
+        ]
+      },
+      "metricsSpec": [
+        {"name": "count", "type": "count"},
+        {"name": "victimAgeAvg", "type": "doubleAvg", "fieldName": "Vict Age"},
+        {"name": "crimeCount", "type": "longSum", "fieldName": "Crm Cd"}
+      ],
+      "granularitySpec": {
+        "type": "uniform",
+        "segmentGranularity": "MONTH",
+        "queryGranularity": "DAY",
+        "rollup": true
+      }
+    },
+    "ioConfig": {
+      "type": "kafka",
+      "consumerProperties": {
+        "bootstrap.servers": "kafka:9092"
+      },
+      "topic": "druid-ingestion-topic",
+      "inputFormat": {
+        "type": "json"
+      },
+      "useEarliestOffset": true
+    },
+    "tuningConfig": {
+      "type": "kafka",
+      "maxRowsPerSegment": 5000000,
+      "intermediatePersistPeriod": "PT10M"
+    }
+  }
+}

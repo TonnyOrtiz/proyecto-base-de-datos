@@ -1,0 +1,43 @@
+{
+  "type": "index_parallel",
+  "spec": {
+    "dataSchema": {
+      "dataSource": "mi_tabla_postgres",
+      "timestampSpec": {
+        "column": "fecha",
+        "format": "auto"
+      },
+      "dimensionsSpec": {
+        "dimensions": ["columna1", "columna2"]
+      },
+      "metricsSpec": [
+        { "name": "count", "type": "count" }
+      ],
+      "granularitySpec": {
+        "type": "uniform",
+        "segmentGranularity": "DAY",
+        "queryGranularity": "NONE",
+        "rollup": false
+      }
+    },
+    "ioConfig": {
+      "type": "index_parallel",
+      "inputSource": {
+        "type": "jdbc",
+        "connectorConfig": {
+          "connectURI": "jdbc:postgresql://<IP_POSTGRES>:5432/<DB_NAME>",
+          "user": "<usuario>",
+          "password": "<password>"
+        },
+        "table": "<nombre_tabla>"
+      },
+      "inputFormat": {
+        "type": "jdbc"
+      }
+    },
+    "tuningConfig": {
+      "type": "index_parallel"
+    }
+  }
+}
+k
