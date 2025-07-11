@@ -1,20 +1,21 @@
-## Para levantarlo
+# Apache Spark
+
+## Para levantar los contenedores de spark
 ```sh
 sudo docker compose up -d
 ```
 
-## Para ejecutar arhivos .py para spark, procesar los datos y enviarlos a druid
-Primero para druid directo
+## Para procesar los datos y enviarlos a Druid 
 ```sh
-sudo docker exec -it spark spark-submit --packages org.apache.druid:druid-spark-batch_2.12:0.22.0 /data/proceso.py
+sudo docker exec -it spark spark-submit /data/csvproceso.py
 ```
 
-## Para subir los datos del kafka (no lo he probado)
+## Para procesar los datos y enviarlos a PostgreSQL
 ```sh
-curl -X POST -H "Content-Type: application/json" -d @druid/data/spec.json http://localhost:8888/druid/indexer/v1/task
-```sh
+sudo docker exec -it spark spark-submit /data/postgreproceso.py
+```
 
-## Para botarlo
+## Para eliminar a los contenedores
 ```sh
 sudo docker compose down -v
 ```
